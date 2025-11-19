@@ -1,13 +1,10 @@
 # scripts/fetch_data.py
 
-from __future__ import annotations
-
 import argparse
 import json
 import pathlib
-import sys
-import urllib.error
 import urllib.request
+import urllib.error
 
 # Repository configuration
 OWNER = "unam-irya-will-henney"
@@ -15,13 +12,12 @@ REPO = "orion-jets-data"
 BRANCH = "main"
 REMOTE_PATH = "data"  # path within the repository
 
-# GitHub API URL to list contents of the data/ folder
 API_URL = (
     f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{REMOTE_PATH}?ref={BRANCH}"
 )
 
 
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+def parse_args():
     parser = argparse.ArgumentParser(
         description=(
             "Download example FITS files from the orion-jets-data repository "
@@ -48,85 +44,65 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Do not download; just print what would be done.",
     )
 
-    parser.add_argument(
-        "--include-non-fits",
-        action="store_true",
-        help="Also download non-FITS files found in the remote folder.",
-    )
-
-    return parser.parse_args(argv)
+    return parser.parse_args()
 
 
-def list_remote_files(include_non_fits: bool = False) -> list[tuple[str, str]]:
-    """
-    Return a list of (filename, download_url) for files in the remote folder.
-
-    By default, filters to files ending in .fits (case-insensitive).
-    """
+def list_remote_fits_files():
+    """Return a list of (filename, download_url) for .fits files."""
     req = urllib.request.Request(
         API_URL,
         headers={
-            # GitHub API requires a User-Agent; any reasonable string is fine.
-            "User-Agent": "orion-jets-fetch-data/1.0",
+            "User-Agent": "orion-jets-fetch-data",
             "Accept": "application/vnd.github.v3+json",
         },
     )
 
     try:
         with urllib.request.urlopen(req) as resp:
-            if resp.status != 200:
-                raise RuntimeError(f"GitHub API returned HTTP {resp.status}")
             entries = json.load(resp)
-    except urllib.error.HTTPError as exc:
-        raise RuntimeError(f"HTTP error when contacting GitHub API: {exc}") from exc
-    except urllib.error.URLError as exc:
-        raise RuntimeError(f"Network error when contacting GitHub API: {exc}") from exc
+    except (urllib.error.HTTPError, urllib.error.URLError) as e:
+        print("Error contacting GitHub API:", e)
+        return []
 
-    files: list[tuple[str, str]] = []
-
+    files = []
     for entry in entries:
         if entry.get("type") != "file":
-            # Skip subdirectories, symlinks, etc.
             continue
 
         name = entry.get("name")
-        download_url = entry.get("download_url")
+        url = entry.get("download_url")
 
-        if not name or not download_url:
+        if not name or not url:
             continue
 
-        if not include_non_fits and not name.lower().endswith(".fits"):
+        if not name.lower().endswith(".fits"):
             continue
 
-        files.append((name, download_url))
-
-    if not files:
-        raise RuntimeError("No matching files found in remote folder.")
+        files.append((name, url))
 
     return files
 
 
-def download_file(url: str, dest_path: pathlib.Path) -> None:
+def download_file(url, dest_path):
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     print(f"  → Downloading {url} → {dest_path}")
     try:
         urllib.request.urlretrieve(url, dest_path)
-    except urllib.error.URLError as exc:
-        raise RuntimeError(f"Failed to download {url}: {exc}") from exc
+    except urllib.error.URLError as e:
+        print("  ! Failed to download:", e)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
+def main():
+    args = parse_args()
 
-    print(f"Destination directory: {args.dest.resolve()}")
+    print("Destination directory:", args.dest.resolve())
 
-    try:
-        remote_files = list_remote_files(include_non_fits=args.include_non_fits)
-    except RuntimeError as exc:
-        print(f"Error: {exc}", file=sys.stderr)
-        return 1
+    remote_files = list_remote_fits_files()
+    if not remote_files:
+        print("No FITS files found in remote folder.")
+        return
 
-    print(f"Found {len(remote_files)} file(s) in remote folder.")
+    print(f"Found {len(remote_files)} FITS file(s) in remote folder.")
 
     if args.dry_run:
         print("Dry run: no files will be downloaded.\n")
@@ -141,13 +117,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.dry_run:
             print(f"Would download {url} → {dest_path}")
         else:
-            try:
-                download_file(url, dest_path)
-            except RuntimeError as exc:
-                print(f"Error: {exc}", file=sys.stderr)
-
-    return 0
+            download_file(url, dest_path)
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

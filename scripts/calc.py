@@ -47,17 +47,9 @@ def main():
     # Opción para elegir la operación
     parser.add_argument(
         "--operacion",
-        choices=["sumar", "restar", "multiplicar", "dividir"],
+        choices=["sumar", "restar"],
         default="sumar",
-        help="Operación aritmética básica a realizar: ('sumar' por defecto)",
-    )
-
-    # Opción para elegir la precisión
-    parser.add_argument(
-        "--precision",
-        help="Número de cifras decimales.",
-        type=int,
-        default=4,
+        help='Operación a realizar: "sumar" (por defecto) o "restar".',
     )
 
     # Opción booleana "verbose"
@@ -73,25 +65,13 @@ def main():
     if args.operacion == "sumar":
         resultado = args.x + args.y
         operador = "+"
-    elif args.operacion == "restar":
+    else:  # "restar"
         resultado = args.x - args.y
         operador = "-"
-    elif args.operacion == "multiplicar":
-        resultado = args.x * args.y
-        operador = "*"
-    elif args.operacion == "dividir":
-        resultado = args.x / args.y
-        operador = "/"
-    else:
-        # Nunca debemos llegar aquí, pero en caso de que sí ...
-        raise ValueError("Operación no permitida")
-
-    # Redondear según la precisión pedida
-    resultado = round(resultado, ndigits=args.precision)
 
     # Impresión según verbose
     if args.verbose:
-        print(f"{resultado:.{args.precision}f}")
+        print(f"{resultado}")
     else:
         print(f"{args.x} {operador} {args.y} = {resultado}")
 

@@ -6,6 +6,9 @@ from orion_jets import fetch_data
 
 
 def parse_args():
+    """
+    Parse options from the command line
+    """
     parser = argparse.ArgumentParser(
         description=(
             "Download example FITS files from the orion-jets-data repository "

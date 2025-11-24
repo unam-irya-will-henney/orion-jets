@@ -2,7 +2,7 @@
 
 import argparse
 import pathlib
-from orion_jets import fetch_data
+from orion_jets import remote_data
 
 
 def parse_args():
@@ -43,7 +43,7 @@ def main():
 
     print("Destination directory:", args.dest.resolve())
 
-    remote_files = fetch_data.list_remote_fits_files()
+    remote_files = remote_data.list_remote_fits_files()
     if not remote_files:
         print("No FITS files found in remote folder.")
         return
@@ -63,7 +63,7 @@ def main():
         if args.dry_run:
             print(f"Would download {url} → {dest_path}")
         else:
-            fetch_data.download_file(url, dest_path)
+            remote_data.download_file(url, dest_path)
 
 
 if __name__ == "__main__":

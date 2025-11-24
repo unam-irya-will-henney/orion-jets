@@ -1,5 +1,5 @@
 """
-Functions for downloading FITS data files from GitHub
+Functions for downloading FITS data files from the sister repo (orion-jets-data) on GitHub
 """
 
 import json

@@ -3,8 +3,11 @@ I/O utilities for Orion Jets project
 
 Includes functions for reading FITS files and DS9 region files
 """
+
 from astropy.io import fits
 import regions as rg
+from pathlib import Path
+
 
 def get_first_data_hdu(fitsfile: Path) -> fits.PrimaryHDU | fits.ImageHDU:
     """Try each of the HDUs in turn in a FITS file until we find a data array"""
@@ -38,5 +41,3 @@ def get_box_region_masks(regions_file) -> dict[str, rg.RegionMask]:
         mask: rg.RegionMask = reg.to_mask()
         boxes[label] = mask
     return boxes
-
-

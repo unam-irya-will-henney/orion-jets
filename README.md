@@ -25,11 +25,22 @@ Análisis de argumentos de la línea de comandos
 uv add typer cyclopts
 ```
 
-## Agregando los datos FITS al proyecto
+## Sumando los datos FITS al proyecto
 
 ```sh
 uv run scripts/fetch-data.py
 ```
+
+## Funciones selectas de `src/orion_jets`
+
+### `fileio.get_box_region_masks()`
+
+### `fileio.get_first_data_hdu()`
+
+### `xcorr2d.measure_shift_integer()`
+
+### `xcorr2d.measure_shift_gfit()`
+
 
 ## Inicializando el servidor de `jupyterlab`
 

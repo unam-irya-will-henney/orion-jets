@@ -1,48 +1,97 @@
 # orion-jets
 Maestría 2025 Programación: Proyecto sobre movimientos propios en Orión
 
-## New version using `uv init --package`
+## Instrucciones para estudiantes
 
-## Agregando los prerequisitos al proyecto
+Siga los pasos siguientes. Acuérdese hacer un commit de git después de cada cambio mayor
 
-Librerías científicas
+### Agregando los prerequisitos al proyecto
+
+Correr los siguientes comandos
+
+#### Librerías científicas
 ```sh
 uv add astropy scipy regions
 ```
 
-Librerías gráficas
+#### Librerías gráficas
 ```sh
 uv add matplotlib seaborn
 ```
 
-Cuadernos de Jupyter 
+#### Cuadernos de Jupyter con widgets 
 ```sh
 uv add jupyterlab ipykernel jupyterlab-widgets ipympl ipywidgets
 ```
 
-Análisis de argumentos de la línea de comandos
+#### Análisis de argumentos de la línea de comandos
 ```sh
 uv add typer cyclopts
 ```
 
-## Sumando los datos FITS al proyecto
+### Copiar los modulos de `src/orion_jets`
+
+* `fileio.py` - abriendo imágenes FITS y archivos de regiones DS9
+* `remote_data.py` - acceso remoto al archivos FITS
+* `xcorr2d` - correlación crozada en dos dimensiones
+
+### Incorporar los datos FITS al proyecto
+
+Este comando copia los archivos FITS del repo `orion-jets-data` y los instala en la carpeta `data/`
 
 ```sh
 uv run scripts/fetch-data.py
 ```
 
-## Funciones selectas de `src/orion_jets`
+Para ver más opciones:
 
-### `fileio.get_box_region_masks()`
+```sh
+uv run scripts/fetch-data.py
+```
 
-### `fileio.get_first_data_hdu()`
+```
+usage: fetch-data.py [-h] [--dest DEST] [--force] [--dry-run]
 
-### `xcorr2d.measure_shift_integer()`
+Download example FITS files from the orion-jets-data repository into a local data directory.
 
-### `xcorr2d.measure_shift_gfit()`
+options:
+  -h, --help            show this help message and exit
+  --dest DEST           Destination directory for downloaded files (default: data).
+  --force               Re-download files even if they already exist.
+  --dry-run             Do not download; just print what would be done.
+```
 
 
-## Inicializando el servidor de `jupyterlab`
+### Funciones selectas de `src/orion_jets`
+
+#### `fileio.get_box_region_masks()`
+
+#### `fileio.get_first_data_hdu()`
+
+#### `xcorr2d.measure_shift_integer()`
+
+#### `xcorr2d.measure_shift_gfit()`
+
+### Corriendo pruebas con `pytest`
+
+Instalar: 
+```sh
+uv add pytest
+```
+
+Escribir pruebas en `tests/test_*.py`
+
+Por ejemplo, copiar `tests/test_xcorr2d_basic.py` de aquí
+
+Correr todas las pruebas:
+```sh
+uv run pytest
+```
+
+Identifique y corrija cualquier error que se marca. Por ejemplo, `measure_shift_integer()` tiene un bug. 
+
+
+### Inicializando el servidor de `jupyterlab`
 
 ```sh
 uv run jupyter lab
@@ -54,7 +103,7 @@ uv run jupyter lab --no-browser
 
 Luego editar y correr los notebooks en tu browser
 
-## Corriendo los scripts
+### Corriendo los scripts
 
 P.ej., 
 
@@ -63,25 +112,13 @@ cd datos
 uv run ../scripts/proper-motion.py cutout-hh529-acs-2005.fits cutout-hh529-wfc3-2015.fits hh529-boxes.reg
 ```
 
-## Avanzado
+### Avanzado
 
-### Corriendo pruebas con `pytest`
 
-Instalar: 
-```sh
-uv add pytest
-```
-
-Escribir pruebas en `tests/test_*.py`
-
-Correr todas las pruebas:
-```sh
-uv run pytest
-```
-
-### Checando tipos con `ty`
+#### Checando tipos con `ty`
 
 ```sh
 uvx ty check
 ```
 
+#### Linting con `ruff`

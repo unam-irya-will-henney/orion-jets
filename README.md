@@ -33,7 +33,7 @@ uv add typer cyclopts
 
 * `fileio.py` - abriendo imágenes FITS y archivos de regiones DS9
 * `remote_data.py` - acceso remoto al archivos FITS
-* `xcorr2d` - correlación crozada en dos dimensiones
+* `xcorr2d` - correlación cruzada en dos dimensiones
 
 ### Incorporar los datos FITS al proyecto
 
@@ -105,7 +105,7 @@ Luego editar y correr los notebooks en tu browser
 
 ### Corriendo los scripts
 
-P.ej., 
+P.ej., (después de crear el archivo `data/hh529-boxes.reg` con regiones de DS9):
 
 ```sh
 cd datos

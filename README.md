@@ -20,13 +20,46 @@ uv add matplotlib seaborn
 ```
 
 #### Cuadernos de Jupyter con widgets 
+
+Requisitos básicos de jupyter lab. 
+
 ```sh
-uv add jupyterlab ipykernel jupyterlab-widgets ipympl ipywidgets
+uv add jupyterlab ipykernel
 ```
+
+Requisitos para emplear *widgets* (elementos interactivos) dentro de los notebooks
+
+```sh
+uv add jupyterlab-widgets ipympl ipywidgets
+```
+
 
 #### Análisis de argumentos de la línea de comandos
 ```sh
 uv add typer cyclopts
+```
+
+#### Revisando los paquetes instalados en su proyecto
+
+```sh
+uv tree --depth 1
+```
+```
+Resolved 129 packages in 15ms
+orion-jets v0.1.0
+├── astropy v7.1.1
+├── cyclopts v4.2.4
+├── ipykernel v7.1.0
+├── ipympl v0.9.8
+├── ipywidgets v8.1.8
+├── jupyterlab v4.5.0
+├── jupyterlab-widgets v3.0.16
+├── matplotlib v3.10.7
+├── pytest v9.0.1
+├── regions v0.11
+├── scipy v1.16.3
+├── seaborn v0.13.2
+└── typer v0.20.0
 ```
 
 ### Copiar los modulos de `src/orion_jets`
@@ -35,9 +68,14 @@ uv add typer cyclopts
 * `remote_data.py` - acceso remoto al archivos FITS
 * `xcorr2d` - correlación cruzada en dos dimensiones
 
+### Copiar los scripts de `scripts/`
+
+* `fetch-data.py`
+* `proper-motion.py`
+
 ### Incorporar los datos FITS al proyecto
 
-Este comando copia los archivos FITS del repo `orion-jets-data` y los instala en la carpeta `data/`
+Este comando copia los archivos FITS del repo [`unam-irya-will-henney/orion-jets-data`](https://github.com/unam-irya-will-henney/orion-jets-data) y los instala en la carpeta `data/`
 
 ```sh
 uv run scripts/fetch-data.py

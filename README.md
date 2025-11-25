@@ -5,7 +5,7 @@ Maestría 2025 Programación: Proyecto sobre movimientos propios en Orión
 
 Siga los pasos siguientes. Acuérdese hacer un commit de git después de cada cambio mayor
 
-### Agregando los prerequisitos al proyecto
+### Agregar los prerequisitos al proyecto
 
 Correr los siguientes comandos
 
@@ -110,25 +110,6 @@ options:
 
 #### `xcorr2d.measure_shift_gfit()`
 
-### Corriendo pruebas con `pytest`
-
-Instalar: 
-```sh
-uv add pytest
-```
-
-Escribir pruebas en `tests/test_*.py`
-
-Por ejemplo, copiar `tests/test_xcorr2d_basic.py` de aquí
-
-Correr todas las pruebas:
-```sh
-uv run pytest
-```
-
-Identifique y corrija cualquier error que se marca. Por ejemplo, `measure_shift_integer()` tiene un bug. 
-
-
 ### Inicializando el servidor de `jupyterlab`
 
 ```sh
@@ -150,7 +131,26 @@ cd datos
 uv run ../scripts/proper-motion.py cutout-hh529-acs-2005.fits cutout-hh529-wfc3-2015.fits hh529-boxes.reg
 ```
 
-### Avanzado
+### Clase final - jueves 27 de noviembre 2025
+
+
+#### Corriendo pruebas con `pytest`
+
+Instalar: 
+```sh
+uv add pytest
+```
+
+Escribir pruebas en `tests/test_*.py`
+
+Por ejemplo, copiar `tests/test_xcorr2d_basic.py` de aquí
+
+Correr todas las pruebas:
+```sh
+uv run pytest
+```
+
+Identifique y corrija cualquier error que se marca. Por ejemplo, `measure_shift_integer()` tiene un bug. 
 
 
 #### Checando tipos con `ty`
